@@ -135,11 +135,11 @@ sub process_line
 		}
 
 		if (!is_preposition($word)
-		   || $word =~ /^[A-Z]/
-		   || $word =~ /[;,.]/ 
+		   || $word =~ /^[A-Z]{2,}/
+		   || $word =~ /[;,.]/
 		   || $nr_words > 2)
 		{
-			if ($nr_words <= 1 && $word !~ /^[A-Z]/)
+			if ($nr_words <= 1 && $word !~ /^[A-Z]{2,}/)
 			{
 				push @words, $new_word;
 			}
@@ -161,7 +161,7 @@ sub process_line
 
 	for my $word (@words)
 	{
-		next if $word =~ /^[A-Z]/;
+		next if $word =~ /^[A-Z]{2,}/;
 		$word = process_word($word);
 
 	}
