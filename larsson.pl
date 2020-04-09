@@ -1,10 +1,13 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use utf8;
+use open ':std', ':encoding(UTF-8)';
 use Data::Dumper;
 
 my $vowel = qr/[aeiouâăîøå]/;
 my $letter = qr/[a-zA-Zâăîțșøå]/;
+my $ro_uppercase = qr/[A-ZȘȚÎ]/;
 
 sub read_input
 {
@@ -70,6 +73,8 @@ sub double_letter
 sub process_word
 {
 	my $word = shift;
+	my $is_capitalized;
+	$is_capitalized = ($word =~ s/^($ro_uppercase)/lc($1)/e);
 
 	$word =~ s/-//g;
 	$word =~ s/j?ea/ja/g;
@@ -94,6 +99,11 @@ sub process_word
 	$word =~ s/ă/å/g;
 
 	$word = double_letter($word);
+	if ($is_capitalized)
+	{
+		$word =~ s/^(.)/uc($1)/e;
+	}
+
 	return $word;
 }
 
@@ -135,11 +145,11 @@ sub process_line
 		}
 
 		if (!is_preposition($word)
-		   || $word =~ /^[A-Z]{2,}/
+		   || $word =~ /^$ro_uppercase{2,}/
 		   || $word =~ /[;,.]/
 		   || $nr_words > 2)
 		{
-			if ($nr_words <= 1 && $word !~ /^[A-Z]{2,}/)
+			if ($nr_words <= 1 && $word !~ /^$ro_uppercase{2,}/)
 			{
 				push @words, $new_word;
 			}
@@ -161,9 +171,8 @@ sub process_line
 
 	for my $word (@words)
 	{
-		next if $word =~ /^[A-Z]{2,}/;
+		next if $word =~ /^$ro_uppercase{2,}/;
 		$word = process_word($word);
-
 	}
 	return join " ", @words;
 }
