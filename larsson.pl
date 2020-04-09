@@ -87,7 +87,7 @@ sub process_word
 	$word =~ s/v(?!$letter)/f/;
 	$word =~ s/v/w/g;
 	$word =~ s/chi/kj/;
-	$word =~ s/c(?!i)/k/g;
+	$word =~ s/c(?![ie])/k/g;
 	$word =~ s/ci(?!$letter)/ch/;
 	$word =~ s/ș/sch/g;
 	$word =~ s/î/y/g;
